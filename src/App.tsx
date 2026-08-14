@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Menu, X, Mail, Phone, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -15,6 +15,16 @@ import PrivacyPolicy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Studio from './pages/Studio';
 import Process from './pages/Process';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -105,7 +115,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex gap-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
               <Mail size={20} />
-              <span>photo@revat.com</span>
+              <span>info@revatltd.co.uk</span>
             </div>
           </div>
         </div>
@@ -155,6 +165,7 @@ function App() {
       </div>
       
       <Router>
+        <ScrollToTop />
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />

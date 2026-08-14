@@ -1,6 +1,33 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
+  const form = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.current) return;
+
+    setIsSubmitting(true);
+    
+    emailjs.sendForm('service_krfs3vr', 'template_f41h5un', form.current, 'QrQx-xWydAfMZNM4D')
+      .then((result) => {
+          console.log(result.text);
+          setSubmitStatus('success');
+          form.current?.reset();
+      }, (error) => {
+          console.log(error.text);
+          setSubmitStatus('error');
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      });
+  };
+
   return (
     <div>
       <section className="section section-dark text-center" style={{ padding: '6rem 0' }}>
@@ -42,7 +69,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 style={{ marginBottom: '0.25rem', fontWeight: 600 }}>Email Us</h4>
-                    <p className="text-light">photo@revat.com<br/>REVATLTD1987@gmail.com</p>
+                    <p className="text-light">info@revatltd.co.uk</p>
                   </div>
                 </div>
               </div>
@@ -62,30 +89,43 @@ export default function Contact() {
 
             <div className="card">
               <h3 className="heading-md text-primary mb-6">Send a Message</h3>
-              <form className="flex flex-col gap-4" onSubmit={e => e.preventDefault()}>
+              <form ref={form} className="flex flex-col gap-4" onSubmit={sendEmail}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Name</label>
-                  <input type="text" style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }} placeholder="John Doe" />
+                  <input type="text" name="user_name" required style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }} placeholder="John Doe" />
                 </div>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Email</label>
-                  <input type="email" style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }} placeholder="john@example.com" />
+                  <input type="email" name="user_email" required style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }} placeholder="john@example.com" />
                 </div>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Service</label>
-                  <select style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Service / Event</label>
+                  <select name="service" required style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
                     <option>Wedding Photography</option>
                     <option>Portrait & Family</option>
-                    <option>Commercial</option>
+                    <option>Corporate Headshots</option>
+                    <option>General Event Coverage</option>
+                    <option>Birthday Parties</option>
+                    <option>Anniversaries</option>
+                    <option>Conferences & Seminars</option>
+                    <option>Music Concerts / Festivals</option>
+                    <option>Product Photography</option>
+                    <option>Commercial & PR</option>
                     <option>Real Estate</option>
+                    <option>Photo Editing / Retouching</option>
+                    <option>Studio Booking</option>
                     <option>Other</option>
                   </select>
                 </div>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Message</label>
-                  <textarea rows={4} style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', resize: 'vertical' }} placeholder="Tell us about your event..."></textarea>
+                  <textarea name="message" required rows={4} style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', resize: 'vertical' }} placeholder="Tell us about your event..."></textarea>
                 </div>
-                <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Send Request</button>
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ width: '100%', marginTop: '1rem', opacity: isSubmitting ? 0.7 : 1 }}>
+                  {isSubmitting ? 'Sending...' : 'Send Request'}
+                </button>
+                {submitStatus === 'success' && <p style={{ color: 'green', marginTop: '0.5rem', textAlign: 'center' }}>Message sent successfully!</p>}
+                {submitStatus === 'error' && <p style={{ color: 'red', marginTop: '0.5rem', textAlign: 'center' }}>Failed to send message. Please try again.</p>}
               </form>
             </div>
           </div>
