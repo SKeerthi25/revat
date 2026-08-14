@@ -13,7 +13,7 @@ export default function Contact() {
 
     setIsSubmitting(true);
     
-    emailjs.sendForm('service_krfs3vr', 'template_f41h5un', form.current, 'QrQx-xWydAfMZNM4D')
+    emailjs.sendForm('service_krfs3vr', 'template_k1z52u9', form.current, 'QrQx-xWydAfMZNM4D')
       .then((result) => {
           console.log(result.text);
           setSubmitStatus('success');
