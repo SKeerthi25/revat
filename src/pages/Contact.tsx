@@ -69,7 +69,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 style={{ marginBottom: '0.25rem', fontWeight: 600 }}>Email Us</h4>
-                    <p className="text-light">info@revatltd.co.uk</p>
+                    <p className="text-light">photo@revatltd.com</p>
                   </div>
                 </div>
               </div>

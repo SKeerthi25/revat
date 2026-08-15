@@ -115,7 +115,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex gap-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
               <Mail size={20} />
-              <span>info@revatltd.co.uk</span>
+              <span>photo@revatltd.com</span>
             </div>
           </div>
         </div>
